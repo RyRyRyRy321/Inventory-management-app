@@ -138,12 +138,50 @@ function App() {
           <td>{item.address}</td>
           <td>{item.phoneNumber}</td>
           <td>
-            <button className='btn btn-outline-primary m-1'>Update</button>
-            <button className='btn btn-outline-danger m-1'>Delete</button>
+            <button className='btn btn-outline-primary m-1' onClick={printCustomer}>Update</button>
+            <button className='btn btn-outline-danger m-1' onClick={deleteCustomer}>Delete</button>
           </td>
         </tr>
       );
+
+      function updateCustomerEvent(){
+      
+      }
+
+      function printCustomer(){
+
+        const axiosInstance = axios.create({
+          baseURL: "http://localhost:5000/client/"
+        })
+  
+        axiosInstance.get("customer/" + item.customerId).then( response => {
+          console.log(response.data);
+        }).catch( error => {
+          console.log(error);
+        })  
+      }
+
+      function deleteCustomer(){
+
+        const axiosInstance = axios.create({
+          baseURL: "http://localhost:5000/client/"
+        })
+  
+        axiosInstance.delete("customer/" + item.customerId).then( response => {
+          console.log("Customer entity is deleted");
+        }).catch( error => {
+          console.log(error);
+        })
+      }
+
+  
+
     }
+
+    
+
+    
+
 
   }
 
