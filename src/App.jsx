@@ -101,10 +101,11 @@ function App() {
             <th scope="col">Email</th>
             <th scope="col">Address</th>
             <th scope="col">Phone number</th>
+            <th scope="col">Actions</th>
           </tr>
         </thead>
 
-        <tbody className="text-start">
+        <tbody className="text-start align-middle">
           {customerData.map(displayCustomerTable)}
         </tbody>
       </table>
@@ -136,6 +137,10 @@ function App() {
           <td>{item.email}</td>
           <td>{item.address}</td>
           <td>{item.phoneNumber}</td>
+          <td>
+            <button className='btn btn-outline-primary m-1'>Update</button>
+            <button className='btn btn-outline-danger m-1'>Delete</button>
+          </td>
         </tr>
       );
     }
