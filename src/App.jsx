@@ -138,37 +138,26 @@ function App() {
           <td>{item.address}</td>
           <td>{item.phoneNumber}</td>
           <td>
-            <button className='btn btn-outline-primary m-1' onClick={printCustomer}>Update</button>
-            <button className='btn btn-outline-danger m-1' onClick={deleteCustomer}>Delete</button>
+            <button className='btn btn-outline-primary m-1' onClick={updateCustomers}>Update</button>
+            <button className='btn btn-outline-danger m-1' onClick={deleteCustomers}>Delete</button>
           </td>
         </tr>
       );
 
-      function updateCustomerEvent(){
+      function updateCustomers(){
       
       }
 
-      function printCustomer(){
-
-        const axiosInstance = axios.create({
-          baseURL: "http://localhost:5000/client/"
-        })
-  
-        axiosInstance.get("customer/" + item.customerId).then( response => {
-          console.log(response.data);
-        }).catch( error => {
-          console.log(error);
-        })  
-      }
-
-      function deleteCustomer(){
+      function deleteCustomers(){
 
         const axiosInstance = axios.create({
           baseURL: "http://localhost:5000/client/"
         })
   
         axiosInstance.delete("customer/" + item.customerId).then( response => {
-          console.log("Customer entity is deleted");
+          const updateData = customerData.filter(customer => customer.customerId !== item.customerId);
+          setCustomerData(updateData);
+        
         }).catch( error => {
           console.log(error);
         })
