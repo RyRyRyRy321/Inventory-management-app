@@ -1,21 +1,30 @@
 import { useEffect, useState } from 'react'
-import reactLogo from './assets/react.svg'
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 import axios from 'axios';
 import React from 'react';
+import CustomerTable from './CustomerTable';
+
 import './App.css'
+
+const customerTable = 
+  [
+  {"customerId": 1, "name": "test_1", "email": "test_1@example.com", "address": "test_1 address", "phoneNumber": "52498657"},
+  {"customerId": 2, "name": "test_2", "email": "test_2@example.com", "address": "test_2 address", "phoneNumber": "64975216"},
+  {"customerId": 3, "name": "test_3", "email": "test_3@example.com", "address": "test_3 address", "phoneNumber": "35216745"}
+  ];
   
 
 function App() {
+  
 
-
+  
   return (
 
     <div className="App">
 
       <CustomerHeader></CustomerHeader>
-      <CustomerTable></CustomerTable>
+      <CustomerTable customerData = {customerTable} ></CustomerTable>
       
     </div>
 
@@ -87,92 +96,6 @@ function App() {
     );
   }
 
-  function CustomerTable(props){
-
-    const [customerData, setCustomerData] = useState([]);
-
-    useEffect(getCustomers,[]);
-
-    return (
-      <table className="table table-striped">
-        <thead className="text-center">
-          <tr>
-            <th scope="col">Name</th>
-            <th scope="col">Email</th>
-            <th scope="col">Address</th>
-            <th scope="col">Phone number</th>
-            <th scope="col">Actions</th>
-          </tr>
-        </thead>
-
-        <tbody className="text-start align-middle">
-          {customerData.map(displayCustomerTable)}
-        </tbody>
-      </table>
-    );
-
-    function getCustomers(){
-      
-      const axiosInstance = axios.create({
-        baseURL: "http://localhost:5000/client/"
-      })
-
-      axiosInstance.get("customer").then( response => {
-        setCustomerData(response.data);
-      }).catch( error => {
-        console.log(error);
-      })
-
-    }
-
-    function displayCustomerTable(item){
-
-      if (customerData === null){
-        return (<p>Loading..</p>);
-      }
-  
-      return(
-        <tr key={item.customerId}>
-          <td>{item.name}</td>
-          <td>{item.email}</td>
-          <td>{item.address}</td>
-          <td>{item.phoneNumber}</td>
-          <td>
-            <button className='btn btn-outline-primary m-1' onClick={updateCustomers}>Update</button>
-            <button className='btn btn-outline-danger m-1' onClick={deleteCustomers}>Delete</button>
-          </td>
-        </tr>
-      );
-
-      function updateCustomers(){
-      
-      }
-
-      function deleteCustomers(){
-
-        const axiosInstance = axios.create({
-          baseURL: "http://localhost:5000/client/"
-        })
-  
-        axiosInstance.delete("customer/" + item.customerId).then( response => {
-          const updateData = customerData.filter(customer => customer.customerId !== item.customerId);
-          setCustomerData(updateData);
-        
-        }).catch( error => {
-          console.log(error);
-        })
-      }
-
-  
-
-    }
-
-    
-
-    
-
-
-  }
 
   function CustomerForm(props){
 
@@ -223,6 +146,9 @@ function App() {
 
 
   }
+
+  
+  
 
 }
 
