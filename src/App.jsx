@@ -3,9 +3,10 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 import axios from 'axios';
 import React from 'react';
-import CustomerTable from './CustomerTable';
-
-import './App.css'
+import AdminNavBar from './components/AdminNavBar';
+import SideNavBar from './components/SideNavBar';
+import { Col, Container, Row } from 'react-bootstrap';
+import TableContainer from './components/TableContainer';
 
 const customerTable = 
   [
@@ -17,14 +18,29 @@ const customerTable =
 
 function App() {
   
-
-  
   return (
 
     <div className="App">
 
-      <CustomerHeader></CustomerHeader>
-      <CustomerTable customerData = {customerTable} ></CustomerTable>
+      <header>
+        <AdminNavBar></AdminNavBar>
+      </header>
+
+
+      <Container fluid>
+        <Row>
+          <Col className='m-1' xs = {2}>
+            <SideNavBar></SideNavBar>
+          </Col>
+
+          <Col className='m-1'>
+            <TableContainer customerData={customerTable}></TableContainer>
+          </Col>
+          
+        </Row>
+
+        
+      </Container>
       
     </div>
 

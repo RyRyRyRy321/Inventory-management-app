@@ -1,13 +1,16 @@
 import { useState, useEffect } from 'react';
 import {Modal, Button, Form, Container, Row, Col, Stack, InputGroup} from 'react-bootstrap'
 
+import "../styles/customer_table.css"
+
 function CustomerTable({customerData}){
 
   return (
-    <div>
-      <table className="table table-striped">
-        <thead className="text-center">
+
+      <table className="product-table table table-striped table-bordered">
+        <thead className="text-center table-dark">
           <tr>
+            <th scope="col">Id</th>
             <th scope="col">Name</th>
             <th scope="col">Email</th>
             <th scope="col">Address</th>
@@ -15,15 +18,13 @@ function CustomerTable({customerData}){
             <th scope="col">Actions</th>
           </tr>
         </thead>
-
         <tbody className="text-start align-middle">
           {
             customerData.map((item) => displayCustomerData(item))
           }
         </tbody>
       </table>
-      
-    </div>
+    
   );
 
 }
@@ -56,6 +57,7 @@ function CustomerRow({customerItem, eventDelete}){
   return(
     <>
       <tr>
+        <td>{customerItem.customerId}</td>
         <td>{customerItem.name}</td>
         <td>{customerItem.email}</td>
         <td>{customerItem.address}</td>
