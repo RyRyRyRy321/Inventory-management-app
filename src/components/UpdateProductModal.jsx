@@ -15,7 +15,7 @@ function UpdateCustomerModal({show, eventClose, targetData}){
       <Modal show={show} onHide={eventClose} size='lg'>
   
         <Modal.Header closeButton>
-          <Modal.Title>Update Customer</Modal.Title>
+          <Modal.Title>Update Product</Modal.Title>
         </Modal.Header>
   
         <Modal.Body>
