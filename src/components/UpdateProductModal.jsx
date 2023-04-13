@@ -4,12 +4,19 @@ import {Modal, Button, Form, Container, Row, Col, Stack, InputGroup} from 'react
 
 function UpdateCustomerModal({show, eventClose, targetData}){
 
-    const [formData, setFormData] = useState({
-      name: '',
-      email: '',
-      address: '',
-      phoneNumber: ''
-    });
+  const productForm = {
+    productName:'',
+    category:'',
+    productDesc:'',
+    quantity:'',
+    stockAlertQuantity:'',
+    productPrice:'',
+    unitPrice:'',
+    discount:'',
+    productImage:''
+  }
+
+    const [productFormData, setProductFormData] = useState(productForm);
   
     return (
       <Modal show={show} onHide={eventClose} size='lg'>
