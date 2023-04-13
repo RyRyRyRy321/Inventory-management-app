@@ -87,17 +87,6 @@ function UpdateCustomerModal({show, eventClose, targetData}){
           </Container>
         </Form>
   
-          {/* <Form.Label>Name</Form.Label>
-          <Form.Control name='name' type = "text" placeholder={targetData.name} value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} ></Form.Control>
-  
-          <Form.Label>Email</Form.Label>
-          <Form.Control name='email' type = "email" placeholder={targetData.email} value={formData.email} onChange={(e) => setFormData({ ...formData, email: e.target.value })} ></Form.Control>
-  
-          <Form.Label>Address</Form.Label>
-          <Form.Control name='address' type = "text" placeholder={targetData.address} value={formData.address} onChange={(e) => setFormData({ ...formData, address: e.target.value })} ></Form.Control>
-  
-          <Form.Label>Phone Number</Form.Label>
-          <Form.Control name='phoneNumber' type = "text" placeholder={targetData.phoneNumber} value={formData.phoneNumber} onChange={(e) => setFormData({ ...formData, phoneNumber: e.target.value })} ></Form.Control> */}
         </Modal.Body>
   
         <Modal.Footer>
