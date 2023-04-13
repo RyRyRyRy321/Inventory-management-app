@@ -16,6 +16,14 @@ function UpdateCustomerModal({show, eventClose, targetData}){
     productImage:''
   }
 
+  const categoryData = [
+
+    {categoryId: 1, categoryName: 'Paper flower', categoryValue: 'paperFlower'},
+    {categoryId: 2, categoryName: 'Balloon', categoryValue: 'balloon'},
+    {categoryId: 3, categoryName: 'Glassware', categoryValue: 'glass_ware'},
+
+  ];
+
     const [productFormData, setProductFormData] = useState(productForm);
   
     return (
@@ -36,9 +44,9 @@ function UpdateCustomerModal({show, eventClose, targetData}){
               <Col col={6}>
                 <Form.Label>Category</Form.Label>
                 <Form.Select aria-label="Default select example">
-                  <option value="test_1">option 1</option>
-                  <option value="test_2">option 2</option>
-                  <option value="test_3">option 3</option>
+                  {
+                    categoryData.map((categoryItem) => renderOptions(categoryItem))
+                  }
                 </Form.Select>
               </Col>
             </Row>
@@ -108,6 +116,13 @@ function UpdateCustomerModal({show, eventClose, targetData}){
     );
   
     
-  }
+}
+
+function renderOptions(categoryItem){
+  return (
+    <option key={categoryItem.categoryId} value = {categoryItem.categoryValue}>{categoryItem.categoryName}</option>
+  )
+}
+
 
 export default UpdateCustomerModal;
