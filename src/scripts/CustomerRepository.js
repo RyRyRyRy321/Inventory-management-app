@@ -11,7 +11,6 @@ class CustomerRepository {
     static async getCustomers(){
         try {
             const response = await this.axiosInstance.get("customer");
-
             return response.data;
         } catch (error) {
           console.log(error);

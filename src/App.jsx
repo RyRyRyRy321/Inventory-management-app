@@ -6,15 +6,24 @@ import React from 'react';
 import AdminNavBar from './components/AdminNavBar';
 import SideNavBar from './components/SideNavBar';
 import { Col, Container, Row } from 'react-bootstrap';
-import TableContainer from './components/TableContainer';
+import ProductTable from './components/ProductTable';
 
-const customerTable = 
-  [
-  {"customerId": 1, "name": "test_1", "email": "test_1@example.com", "address": "test_1 address", "phoneNumber": "52498657"},
-  {"customerId": 2, "name": "test_2", "email": "test_2@example.com", "address": "test_2 address", "phoneNumber": "64975216"},
-  {"customerId": 3, "name": "test_3", "email": "test_3@example.com", "address": "test_3 address", "phoneNumber": "35216745"}
-  ];
-  
+
+const placeHolderData = [
+  {
+      productId: 1,
+      productName: 'Product 1',
+      category: 'Paper flowers',
+      productDesc: 'A description',
+      quantity: 31,
+      stockAlertQuantity: 23,
+      productPrice: 41,
+      unitPrice: 23,
+      discount: 0.25 
+  }
+];
+
+
 
 function App() {
   
@@ -34,7 +43,7 @@ function App() {
           </Col>
 
           <Col className='m-1'>
-            <TableContainer customerData={customerTable}></TableContainer>
+            <ProductTable productData={placeHolderData}></ProductTable>
           </Col>
           
         </Row>

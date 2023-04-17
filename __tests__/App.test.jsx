@@ -14,6 +14,12 @@ function sum(a, b) {
     return a + b;
 }
 
+function func_1(){
+    Object.keys(productItem).map((key) => {
+        return productItem[key]
+    })
+}
+
 function Component_1(){
     return (
         <h3>Hello world</h3>
@@ -29,6 +35,7 @@ function componentTest(){
     expect(textElement).toBeInTheDocument();
 }
 
+test('print all', )
 
 
 
