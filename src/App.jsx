@@ -6,11 +6,12 @@ import axios from 'axios';
 import React from 'react';
 import AdminNavBar from './components/AdminNavBar';
 import SideNavBar from './components/SideNavBar';
-import { Button, Col, Container, Row } from 'react-bootstrap';
+import { Button, Col, Container, Row, Stack } from 'react-bootstrap';
 import { useTable } from 'react-table';
 import ProductRepository from './scripts/ProductRepository';
 import UpdateCustomerModal from './components/UpdateProductModal';
 import AddCustomerModal from './components/AddProductModal';
+import DeleteModal from './components/DeleteModal';
 
 function App() {
 
@@ -41,6 +42,8 @@ function App() {
     
     const [data, setProductData] = useState([]);
     const [modalOpen, setModalOpen] = useState(false);
+    const [modalOpenUpdate, setModalOpenUpdate] = useState(false);
+    const [modalOpenDelete, setModalOpenDelete] = useState(false);
     
 
     const openModal = () => {
@@ -49,6 +52,22 @@ function App() {
   
     const closeModal = () => {
       setModalOpen(false);
+    };
+
+    const openModalUpdate = () => {
+      setModalOpenUpdate(true);
+    };
+  
+    const closeModalUpdate = () => {
+      setModalOpenUpdate(false);
+    };
+
+    const openModalDelete = () => {
+      setModalOpenDelete(true);
+    };
+  
+    const closeModalDelete = () => {
+      setModalOpenDelete(false);
     };
 
     async function fetchData(){
@@ -102,6 +121,7 @@ function App() {
                         column.render('Header')}
                       </th>
                     ))}
+                    <th>Actions</th>
                   </tr>
                 ))}
               </thead>
@@ -124,6 +144,12 @@ function App() {
                           </td>
                         )
                       })}
+                      <td>
+                        <Stack direction='horizontal' gap = {1}>
+                          <Button onClick={openModalUpdate}>Update</Button>
+                          <Button onClick={openModalDelete}>Delete</Button>
+                        </Stack>
+                      </td>
                     </tr>
                   )
                 })}
@@ -141,7 +167,8 @@ function App() {
 
           
         <AddCustomerModal show={modalOpen} eventClose={closeModal} rerenderEvent={fetchData}></AddCustomerModal>
-          
+        <UpdateCustomerModal show={modalOpenUpdate} eventClose={closeModalUpdate}></UpdateCustomerModal>
+        <DeleteModal show={modalOpenDelete} eventClose={closeModalDelete}></DeleteModal>
         </Container>
 
       </div>
