@@ -2,7 +2,7 @@ import { useState} from 'react';
 import {Modal, Button, Form, Container, Row, Col, Stack, InputGroup} from 'react-bootstrap'
 import axios from 'axios';
 
-function AddCustomerModal({show, eventClose}){
+function AddCustomerModal({show, eventClose, rerenderEvent}){
 
   const emptyProductForm = {
     productName:'',
@@ -30,17 +30,17 @@ function AddCustomerModal({show, eventClose}){
   
   const handleSubmit = async (e) => {
     e.preventDefault();
-    debugger;
 
     try {
       const response = await axios.post('http://localhost:5000/client/product', productFormData);
       console.log(response.data); // Handle the response data
       setProductFormData(emptyProductForm);
+      rerenderEvent();
+      eventClose();
     } catch (error) {
       console.error(error);
     }
 
-    debugger;
   };
 
 

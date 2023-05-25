@@ -50,20 +50,18 @@ function App() {
     const closeModal = () => {
       setModalOpen(false);
     };
-  
-    useEffect(() => {
-      const fetchData = async () => {
-        try {
-          const productData = await ProductRepository.getProduct();
-          setProductData(productData);
-        } catch (error) {
-          console.log(error);
-          setProductData(productData);
-        }
-      };
 
-      fetchData();
-    },[]);
+    async function fetchData(){
+      try {
+        const productData = await ProductRepository.getProduct();
+        setProductData(productData);
+      } catch (error) {
+        console.log(error);
+        setProductData(productData);
+      }
+    }
+  
+    useEffect(() => {fetchData()},[]);
   
     
     const {
@@ -142,7 +140,7 @@ function App() {
           </Row>
 
           
-        <AddCustomerModal show={modalOpen} eventClose={closeModal}></AddCustomerModal>
+        <AddCustomerModal show={modalOpen} eventClose={closeModal} rerenderEvent={fetchData}></AddCustomerModal>
           
         </Container>
 
