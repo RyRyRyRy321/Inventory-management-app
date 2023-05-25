@@ -8,7 +8,7 @@ class ProductRepository {
     
     static async getProduct(){
         try {
-            const response = await this.axiosInstance.get("customer");
+            const response = await this.axiosInstance.get("product");
             return response.data;
         } catch (error) {
           console.log(error);
@@ -19,4 +19,4 @@ class ProductRepository {
 
 }
 
-export default CustomerRepository;
+export default ProductRepository;

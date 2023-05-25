@@ -1,7 +1,6 @@
 import axios from 'axios';
 
 
-
 class CustomerRepository {
 
     static axiosInstance = axios.create({
@@ -16,7 +15,6 @@ class CustomerRepository {
           console.log(error);
           return [];
         }
-
     }
 
     static updateCustomers(id){

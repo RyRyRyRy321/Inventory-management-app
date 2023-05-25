@@ -1,26 +1,20 @@
 import { useState, useEffect } from 'react';
 import "../styles/customer_table.css"
+import TableEvents from '../scripts/TableEvents'
 
-function ProductTable({productData}){
+function ProductTable({productData, tableConfig}){
 
-  const [currentProductData, setCurrentProductData] = useState(productData);
+  var parseData = TableEvents.parseTableObject(productData,tableConfig);
+
+  const [currentProductData, setCurrentProductData] = useState(parseData);
+
+  const headers = TableEvents.getHeaders(tableConfig)
+  const accessors = TableEvents.getAccessors(tableConfig)
 
   useEffect(() => {
-    setCurrentProductData(productData);
-  }, [productData])
-
-
-    const headers = ["Product Id",
-        "Product name",
-        "Category",
-        "Product description",
-        "Quantity",
-        "Alert quantity",
-        "Product price",
-        "Unit price",
-        "Discount"
-    ];
-
+    setCurrentProductData(parseData);
+  }, [parseData])
+  
   return (
 
       <table className="product-table table table-striped table-bordered">
@@ -28,12 +22,11 @@ function ProductTable({productData}){
         <thead className="text-center table-dark">
           <tr>
             <TableHeader headers = {headers}></TableHeader>
-            <TableActionHeader></TableActionHeader>
           </tr>
         </thead>
 
         <tbody className="text-start align-middle">
-          <TableData data={currentProductData}></TableData>
+          <TableData data={currentProductData} accessors={accessors}></TableData>
         </tbody>
       </table>
     
@@ -41,12 +34,13 @@ function ProductTable({productData}){
 
 }
 
+
 function TableHeader({headers}){
   return headers.map((currentValue, index) => renderHeaders(currentValue,index));
 }
 
-function TableData({data}){
-  return data.map((item) => displayProductRow(item))
+function TableData({data,accessors}){
+    return data.map((item) => displayProductRow(item, accessors))
 }
 
 function TableActionHeader(){
@@ -58,7 +52,7 @@ function displayProductRow(item){
   if (item === null){
       return (<LoadingComponent></LoadingComponent>);
   }
-  
+
   return(
     <ProductRow key = {item.productId} productItem = {item}></ProductRow>
   );
@@ -68,16 +62,10 @@ function displayProductRow(item){
 function ProductRow({productItem}){
 
   return(
-    <>
-      <tr>
+    <tr>
 
-        {renderEachTableDataPropertyInObject(productItem)}
-          
-
-
-        <ProductActionColumn></ProductActionColumn>
-      </tr>
-    </>
+      {renderEachTableDataPropertyInObject(productItem)}
+    </tr>
   );
 
 }
@@ -108,30 +96,11 @@ function renderHeaders(header, index){
     );
 }
 
-function renderEachTableDataPropertyInObject(product){
-  return Object.keys(product).map((key) => {
-    return renderTableDataPropertyValue(product[key])
-  })
-}
-
-function renderTableDataPropertyValue(productData){
+function renderTableDataPropertyValue(data){
     return (
-        <td>{productData}</td>
+        <td>{data}</td>
     );
 }
-
-const tableConfig = [
-  {
-    header: 'Product Id',
-    accessor: 'productId'
-  },
-  {
-    header: 'Product name',
-    accessor: 'productName'
-  }
-
-]
-
 
 
 export default ProductTable;

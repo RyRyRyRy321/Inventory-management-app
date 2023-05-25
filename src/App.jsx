@@ -1,180 +1,154 @@
 import { useEffect, useState } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
 
+
 import axios from 'axios';
 import React from 'react';
 import AdminNavBar from './components/AdminNavBar';
 import SideNavBar from './components/SideNavBar';
-import { Col, Container, Row } from 'react-bootstrap';
-import ProductTable from './components/ProductTable';
-
-
-const placeHolderData = [
-  {
-      productId: 1,
-      productName: 'Product 1',
-      category: 'Paper flowers',
-      productDesc: 'A description',
-      quantity: 31,
-      stockAlertQuantity: 23,
-      productPrice: 41,
-      unitPrice: 23,
-      discount: 0.25 
-  }
-];
-
-
+import { Button, Col, Container, Row } from 'react-bootstrap';
+import { useTable } from 'react-table';
+import ProductRepository from './scripts/ProductRepository';
+import UpdateCustomerModal from './components/UpdateProductModal';
+import AddCustomerModal from './components/AddProductModal';
 
 function App() {
+
+    const columns = React.useMemo(() => [
+
+      {
+        Header: 'Product Id',
+        accessor: 'productId'
+      },
+      {
+        Header: 'Product name',
+        accessor: 'productName'
+      },
+      {
+        Header: 'Category',
+        accessor: 'category'
+      },
+      {
+        Header: 'Product Description',
+        accessor: 'productDesc'
+      },
+      {
+        Header: 'Quantity',
+        accessor: 'quantity'
+      }
+      ],[]
+    );
+    
+    const [data, setProductData] = useState([]);
+    const [modalOpen, setModalOpen] = useState(false);
+    
+
+    const openModal = () => {
+      setModalOpen(true);
+    };
   
-  return (
-
-    <div className="App">
-
-      <header>
-        <AdminNavBar></AdminNavBar>
-      </header>
-
-
-      <Container fluid>
-        <Row>
-          <Col className='m-1' xs = {2}>
-            <SideNavBar></SideNavBar>
-          </Col>
-
-          <Col className='m-1'>
-            <ProductTable productData={placeHolderData}></ProductTable>
-          </Col>
-          
-        </Row>
-
-        
-      </Container>
-      
-    </div>
-
-  )
+    const closeModal = () => {
+      setModalOpen(false);
+    };
   
-
-  function ExampleForm(){
-
-    const [userName, setUserName] = useState("");
-
-    function eventChanged(event){
-      setUserName(event.target.value);
-    }
-
-    function submitForm(event){
-      event.preventDefault();
-      console.log("The username is " + userName);
-    }
-
-    return (
-
-      <form onSubmit={submitForm}>
-        <label htmlFor='userName' className="form-label">Name</label>
-        <input className="form-control" type= "text" name = "userName" value={userName} onChange={eventChanged}></input>
-        <button className="btn btn-primary" type='submit'>Submit</button> 
-      </form>
-
-    );
-
-      
-  }
-
-  function ExampleForm_2(){
-
-    const [formData, setFormData] = useState({userName: "", email: ""});
-
-    function eventChanged(event){
-      setFormData({...formData, [event.target.name]: event.target.value});
-    }
-
-    function submitForm(event){
-      event.preventDefault();
-
-      console.table(formData);
-
-    }
-
-    return (
-
-      <form onSubmit={submitForm}>
-        <label htmlFor='userName' className="form-label">Name</label>
-        <input className="form-control" type= "text" name = "userName" value={formData.userName} onChange={eventChanged} required></input>
-        
-        <label htmlFor='email' className="form-label">Email</label>
-        <input className="form-control" type= "email" name = "email" value={formData.email} onChange={eventChanged} required></input>
-        
-        
-        <button className="btn btn-primary" type='submit'>Submit</button> 
-      </form>
-
-    );
-
-      
-  }
-
-  function CustomerHeader(props){
-    return (
-      <h2>Customer table</h2>
-    );
-  }
-
-
-  function CustomerForm(props){
-
-      const [formData, setFormData] = useState({name: "", email: "", address: "", phoneNumber: ""})
-
-    return (
-      <form onSubmit={submitForm} method='post'>
-
-        <div className="mb-3">
-          <label htmlFor="name" className="form-label">Name</label>
-          <input type="text" name="name" className="form-control" value={formData.name} onChange = {handleChange}  />
-        </div>
-
-        <div className="mb-3">
-          <label htmlFor="email" className="form-label">Email</label>
-          <input type="email" className="form-control" value={formData.email} onChange = {handleChange} name="email"/>
-        </div>
-
-        <div className="mb-3">
-          <label htmlFor="address" className="form-label">Address</label>
-          <input type="text" className="form-control" value={formData.address} onChange = {handleChange} name="address"/>
-        </div>
-
-        <div className="mb-3">
-          <label htmlFor="phone_number" className="form-label">Phone Number</label>
-          <input type="number" className="form-control" value={formData.phoneNumber} onChange = {handleChange} name="phoneNumber"/>
-        </div>
-
-        <button type="submit" className="btn btn-primary">Submit</button>
-    </form>
-    );
-
-    function submitForm(event){
-      event.preventDefault();
-  
-      axios.post('http://localhost:5000/client/customer', formData).then(
-        response => {
-          console.log(response.data);
+    useEffect(() => {
+      const fetchData = async () => {
+        try {
+          const productData = await ProductRepository.getProduct();
+          setProductData(productData);
+        } catch (error) {
+          console.log(error);
+          setProductData(productData);
         }
-      ).catch(error => {
-        console.log(error);
-      })
-    }
+      };
 
-    function handleChange(event){
-      setFormData({...formData, [event.target.name]: event.target.value});
-    }
+      fetchData();
+    },[]);
+  
+    
+    const {
+      headerGroups,
+      rows,
+      prepareRow,
+    } = useTable({ columns, data })
 
 
+
+    return (
+
+      <div className="App">
+
+        <header>
+          <AdminNavBar></AdminNavBar>
+        </header>
+
+
+        <Container fluid>
+          <Row>
+            <Col className='m-1' xs = {2}>
+              <SideNavBar></SideNavBar>
+            </Col>
+
+            <Col className='m-1'>
+            <table className = "table table-bordered">
+              <thead>
+                {// Loop over the header rows
+                headerGroups.map(headerGroup => (
+                  // Apply the header row props
+                  <tr {...headerGroup.getHeaderGroupProps()}>
+                    {// Loop over the headers in each row
+                    headerGroup.headers.map(column => (
+                      // Apply the header cell props
+                      <th {...column.getHeaderProps()}>
+                        {// Render the header
+                        column.render('Header')}
+                      </th>
+                    ))}
+                  </tr>
+                ))}
+              </thead>
+
+              <tbody>
+                {// Loop over the table rows
+                rows.map(row => {
+                  // Prepare the row for display
+                  prepareRow(row)
+
+                  return (
+                    <tr>
+                      {// Loop over the rows cells
+                      row.cells.map(cell => {
+                        // Apply the cell props
+                        return (
+                          <td>
+                            {// Render the cell contents
+                            cell.render('Cell')}
+                          </td>
+                        )
+                      })}
+                    </tr>
+                  )
+                })}
+              </tbody>
+            </table>
+
+              <Row>
+                <Col>
+                  <Button onClick = {openModal}>Add Product</Button>
+                </Col>
+              </Row>
+            </Col>
+            
+          </Row>
+
+          
+        <AddCustomerModal show={modalOpen} eventClose={closeModal}></AddCustomerModal>
+          
+        </Container>
+
+      </div>
+    )
+  
   }
-
-  
-  
-
-}
 
 export default App
