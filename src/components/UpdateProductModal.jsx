@@ -16,6 +16,8 @@ function UpdateCustomerModal({show, eventClose, targetData}){
     productImage:''
   }
 
+  console.table(targetData);
+
   const categoryData = [
 
     {categoryId: 1, categoryName: 'Paper flower', categoryValue: 'paperFlower'},
@@ -39,11 +41,11 @@ function UpdateCustomerModal({show, eventClose, targetData}){
             <Row className='mb-2'>
               <Col col={6}>
                 <Form.Label>Product Name</Form.Label>
-                <Form.Control type = 'text'></Form.Control>
+                <Form.Control name = 'productName' defaultValue={targetData.productName} type = 'text'></Form.Control>
               </Col>
               <Col col={6}>
                 <Form.Label>Category</Form.Label>
-                <Form.Select aria-label="Default select example">
+                <Form.Select name = 'category' value = {targetData.category} aria-label="Default select example">
                   {
                     categoryData.map((categoryItem) => renderOptions(categoryItem))
                   }
@@ -53,18 +55,18 @@ function UpdateCustomerModal({show, eventClose, targetData}){
             <Row className='mb-2'>
               <Col>
                 <Form.Label>Product description</Form.Label>
-                <Form.Control as ="textarea" rows={5} placeholder='Maximum of 300 characters'></Form.Control>
+                <Form.Control as ="textarea" name = 'productDesc' defaultValue={targetData.productDesc} rows={5} placeholder='Maximum of 300 characters'></Form.Control>
               </Col>
             </Row>
             <Row className='mb-2'>
               <Col col={6}>
                 <Form.Label>Quantity</Form.Label>
-                <Form.Control type = 'number'></Form.Control>
+                <Form.Control type = 'number' name = 'quantity' defaultValue={targetData.quantity}></Form.Control>
               </Col>
   
               <Col col={6}>
                 <Form.Label>Stock alert</Form.Label>
-                <Form.Control type='number'></Form.Control>
+                <Form.Control type='number' name = 'stockAlertQuantity' defaultValue={targetData.stockAlertQuantity}></Form.Control>
               </Col>
   
             </Row>
@@ -74,7 +76,7 @@ function UpdateCustomerModal({show, eventClose, targetData}){
   
                 <InputGroup>
                   <InputGroup.Text>₱</InputGroup.Text>
-                  <Form.Control type = 'number'></Form.Control>
+                  <Form.Control type = 'number' name = 'productPrice' defaultValue={targetData.productPrice}></Form.Control>
                 </InputGroup>
         
               </Col>
@@ -83,7 +85,7 @@ function UpdateCustomerModal({show, eventClose, targetData}){
   
                 <InputGroup>
                   <InputGroup.Text>₱</InputGroup.Text>
-                  <Form.Control type = 'number'></Form.Control>
+                  <Form.Control type = 'number' name = 'unitPrice' defaultValue={targetData.unitPrice}></Form.Control>
                 </InputGroup>
                 
               </Col>
@@ -91,7 +93,7 @@ function UpdateCustomerModal({show, eventClose, targetData}){
             <Row className='mb-2'>
               <Col col={1}>
                 <Form.Label>Discount</Form.Label>
-                <Form.Control type='number'></Form.Control>
+                <Form.Control type='number' name = 'discount' defaultValue={targetData.discount}></Form.Control>
               </Col>
               
               <Col>

@@ -12,6 +12,9 @@ import ProductRepository from './scripts/ProductRepository';
 import UpdateCustomerModal from './components/UpdateProductModal';
 import AddCustomerModal from './components/AddProductModal';
 import DeleteModal from './components/DeleteModal';
+import UpdateButton from './components_2/UpdateButton';
+
+
 
 function App() {
 
@@ -36,9 +39,21 @@ function App() {
       {
         Header: 'Quantity',
         accessor: 'quantity'
+      },
+      {
+        Header: 'Actions',
+        Cell: ({row}) => (
+          <Stack direction='horizontal' gap = {1}>
+            <Button onClick={() => openModalUpdate(row)}>Update</Button>
+            <Button onClick={openModalDelete}>Delete</Button>
+          </Stack>
+        ),
+
       }
       ],[]
     );
+
+    const [updateData, setUpdateData] = useState([]);
     
     const [data, setProductData] = useState([]);
     const [modalOpen, setModalOpen] = useState(false);
@@ -54,8 +69,11 @@ function App() {
       setModalOpen(false);
     };
 
-    const openModalUpdate = () => {
+    //Fixed event ability to send to REST server
+    const openModalUpdate = (row) => {
+      console.log(row.original.productId);
       setModalOpenUpdate(true);
+      setUpdateData(row.original);
     };
   
     const closeModalUpdate = () => {
@@ -89,8 +107,6 @@ function App() {
       prepareRow,
     } = useTable({ columns, data })
 
-
-
     return (
 
       <div className="App">
@@ -107,7 +123,7 @@ function App() {
             </Col>
 
             <Col className='m-1'>
-            <table className = "table table-bordered">
+             <table className = "table table-bordered">
               <thead>
                 {// Loop over the header rows
                 headerGroups.map(headerGroup => (
@@ -121,7 +137,6 @@ function App() {
                         column.render('Header')}
                       </th>
                     ))}
-                    <th>Actions</th>
                   </tr>
                 ))}
               </thead>
@@ -143,18 +158,15 @@ function App() {
                             cell.render('Cell')}
                           </td>
                         )
-                      })}
-                      <td>
-                        <Stack direction='horizontal' gap = {1}>
-                          <Button onClick={openModalUpdate}>Update</Button>
-                          <Button onClick={openModalDelete}>Delete</Button>
-                        </Stack>
-                      </td>
+                      })
+                      }
+
                     </tr>
                   )
                 })}
               </tbody>
             </table>
+            
 
               <Row>
                 <Col>
@@ -167,7 +179,7 @@ function App() {
 
           
         <AddCustomerModal show={modalOpen} eventClose={closeModal} rerenderEvent={fetchData}></AddCustomerModal>
-        <UpdateCustomerModal show={modalOpenUpdate} eventClose={closeModalUpdate}></UpdateCustomerModal>
+        <UpdateCustomerModal show={modalOpenUpdate} eventClose={closeModalUpdate} targetData={updateData}></UpdateCustomerModal>
         <DeleteModal show={modalOpenDelete} eventClose={closeModalDelete}></DeleteModal>
         </Container>
 
