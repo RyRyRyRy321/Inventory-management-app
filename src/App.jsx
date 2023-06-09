@@ -45,14 +45,14 @@ function App() {
         Cell: ({row}) => (
           <Stack direction='horizontal' gap = {1}>
             <Button onClick={() => openModalUpdate(row)}>Update</Button>
-            <Button onClick={openModalDelete}>Delete</Button>
+            <Button onClick={() => openModalDelete(row)}>Delete</Button>
           </Stack>
         ),
 
       }
       ],[]
     );
-
+    const [deleteData, setDeleteData] = useState([]);
     const [updateData, setUpdateData] = useState([]);
     const [data, setProductData] = useState([]);
     const [modalOpen, setModalOpen] = useState(false);
@@ -77,8 +77,9 @@ function App() {
       setModalOpenUpdate(false);
     };
 
-    const openModalDelete = () => {
+    const openModalDelete = (row) => {
       setModalOpenDelete(true);
+      setDeleteData(row.original);
     };
   
     const closeModalDelete = () => {
@@ -177,7 +178,7 @@ function App() {
         
         <AddCustomerModal show={modalOpen} eventClose={closeModal} rerenderEvent={fetchData}></AddCustomerModal>
         <UpdateCustomerModal show={modalOpenUpdate} eventClose={closeModalUpdate} targetData={updateData} rerenderEvent={fetchData}></UpdateCustomerModal>
-        <DeleteModal show={modalOpenDelete} eventClose={closeModalDelete}></DeleteModal>
+        <DeleteModal show={modalOpenDelete} eventClose={closeModalDelete} targetData={deleteData} rerenderEvent={fetchData}></DeleteModal>
         </Container>
 
       </div>
