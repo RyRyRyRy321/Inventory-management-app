@@ -1,22 +1,12 @@
-import { useState} from 'react';
+import { useEffect, useState} from 'react';
 import {Modal, Button, Form, Container, Row, Col, Stack, InputGroup} from 'react-bootstrap'
+import axios from 'axios';
 
+function UpdateCustomerModal({show, eventClose, targetData, rerenderEvent}){
 
-function UpdateCustomerModal({show, eventClose, targetData}){
+  const [productFormData, setProductFormData] = useState({});
+  useEffect(() => {setProductFormData(targetData)}, [targetData])
 
-  const productForm = {
-    productName:'',
-    category:'',
-    productDesc:'',
-    quantity:'',
-    stockAlertQuantity:'',
-    productPrice:'',
-    unitPrice:'',
-    discount:'',
-    productImage:''
-  }
-
-  console.table(targetData);
 
   const categoryData = [
 
@@ -26,8 +16,35 @@ function UpdateCustomerModal({show, eventClose, targetData}){
 
   ];
 
-    const [productFormData, setProductFormData] = useState(productForm);
-  
+
+  const handleChange = (e) => {
+    setProductFormData({ ...productFormData, [e.target.name]: e.target.value });
+  };
+
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    
+    console.log(productFormData);
+
+    try {
+      const response = await axios.put('http://localhost:5000/client/product/'.concat(targetData.productId), productFormData);
+      
+      console.log(response.data); // Handle the response data
+      
+      setProductFormData(targetData);
+      rerenderEvent();
+      eventClose();
+    } catch (error) {
+      console.error(error);
+    }
+
+
+
+  };
+
+
     return (
       <Modal show={show} onHide={eventClose} size='lg'>
   
@@ -41,11 +58,11 @@ function UpdateCustomerModal({show, eventClose, targetData}){
             <Row className='mb-2'>
               <Col col={6}>
                 <Form.Label>Product Name</Form.Label>
-                <Form.Control name = 'productName' defaultValue={targetData.productName} type = 'text'></Form.Control>
+                <Form.Control name = 'productName' defaultValue={targetData.productName} type = 'text' onChange={handleChange}></Form.Control>
               </Col>
               <Col col={6}>
                 <Form.Label>Category</Form.Label>
-                <Form.Select name = 'category' value = {targetData.category} aria-label="Default select example">
+                <Form.Select name = 'category' value = {targetData.category} aria-label="Default select example" onChange={handleChange}>
                   {
                     categoryData.map((categoryItem) => renderOptions(categoryItem))
                   }
@@ -55,18 +72,18 @@ function UpdateCustomerModal({show, eventClose, targetData}){
             <Row className='mb-2'>
               <Col>
                 <Form.Label>Product description</Form.Label>
-                <Form.Control as ="textarea" name = 'productDesc' defaultValue={targetData.productDesc} rows={5} placeholder='Maximum of 300 characters'></Form.Control>
+                <Form.Control as ="textarea" name = 'productDesc' defaultValue={targetData.productDesc} rows={5} placeholder='Maximum of 300 characters' onChange={handleChange}></Form.Control>
               </Col>
             </Row>
             <Row className='mb-2'>
               <Col col={6}>
                 <Form.Label>Quantity</Form.Label>
-                <Form.Control type = 'number' name = 'quantity' defaultValue={targetData.quantity}></Form.Control>
+                <Form.Control type = 'number' name = 'quantity' defaultValue={targetData.quantity} onChange={handleChange}></Form.Control>
               </Col>
   
               <Col col={6}>
                 <Form.Label>Stock alert</Form.Label>
-                <Form.Control type='number' name = 'stockAlertQuantity' defaultValue={targetData.stockAlertQuantity}></Form.Control>
+                <Form.Control type='number' name = 'stockAlertQuantity' defaultValue={targetData.stockAlertQuantity} onChange={handleChange}></Form.Control>
               </Col>
   
             </Row>
@@ -76,7 +93,7 @@ function UpdateCustomerModal({show, eventClose, targetData}){
   
                 <InputGroup>
                   <InputGroup.Text>₱</InputGroup.Text>
-                  <Form.Control type = 'number' name = 'productPrice' defaultValue={targetData.productPrice}></Form.Control>
+                  <Form.Control type = 'number' name = 'productPrice' defaultValue={targetData.productPrice} onChange={handleChange}></Form.Control>
                 </InputGroup>
         
               </Col>
@@ -85,7 +102,7 @@ function UpdateCustomerModal({show, eventClose, targetData}){
   
                 <InputGroup>
                   <InputGroup.Text>₱</InputGroup.Text>
-                  <Form.Control type = 'number' name = 'unitPrice' defaultValue={targetData.unitPrice}></Form.Control>
+                  <Form.Control type = 'number' name = 'unitPrice' defaultValue={targetData.unitPrice} onChange={handleChange}></Form.Control>
                 </InputGroup>
                 
               </Col>
@@ -93,7 +110,7 @@ function UpdateCustomerModal({show, eventClose, targetData}){
             <Row className='mb-2'>
               <Col col={1}>
                 <Form.Label>Discount</Form.Label>
-                <Form.Control type='number' name = 'discount' defaultValue={targetData.discount}></Form.Control>
+                <Form.Control type='number' name = 'discount' defaultValue={targetData.discount} onChange={handleChange}></Form.Control>
               </Col>
               
               <Col>
@@ -110,7 +127,7 @@ function UpdateCustomerModal({show, eventClose, targetData}){
           <Button variant="secondary" onClick={eventClose}>
             Close
           </Button>
-          <Button variant="primary" onClick={eventClose}>
+          <Button variant="primary" onClick={handleSubmit}>
             Save Changes
           </Button>
         </Modal.Footer>

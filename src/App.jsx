@@ -54,7 +54,6 @@ function App() {
     );
 
     const [updateData, setUpdateData] = useState([]);
-    
     const [data, setProductData] = useState([]);
     const [modalOpen, setModalOpen] = useState(false);
     const [modalOpenUpdate, setModalOpenUpdate] = useState(false);
@@ -69,9 +68,7 @@ function App() {
       setModalOpen(false);
     };
 
-    //Fixed event ability to send to REST server
     const openModalUpdate = (row) => {
-      console.log(row.original.productId);
       setModalOpenUpdate(true);
       setUpdateData(row.original);
     };
@@ -177,9 +174,9 @@ function App() {
             
           </Row>
 
-          
+        
         <AddCustomerModal show={modalOpen} eventClose={closeModal} rerenderEvent={fetchData}></AddCustomerModal>
-        <UpdateCustomerModal show={modalOpenUpdate} eventClose={closeModalUpdate} targetData={updateData}></UpdateCustomerModal>
+        <UpdateCustomerModal show={modalOpenUpdate} eventClose={closeModalUpdate} targetData={updateData} rerenderEvent={fetchData}></UpdateCustomerModal>
         <DeleteModal show={modalOpenDelete} eventClose={closeModalDelete}></DeleteModal>
         </Container>
 
@@ -188,4 +185,4 @@ function App() {
   
   }
 
-export default App
+export default App;
