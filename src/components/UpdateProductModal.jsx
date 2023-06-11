@@ -1,6 +1,7 @@
 import { useEffect, useState} from 'react';
 import {Modal, Button, Form, Container, Row, Col, Stack, InputGroup} from 'react-bootstrap'
 import axios from 'axios';
+import ProductRepository from '../scripts/ProductRepository';
 
 function UpdateCustomerModal({show, eventClose, targetData, rerenderEvent}){
 
@@ -10,9 +11,9 @@ function UpdateCustomerModal({show, eventClose, targetData, rerenderEvent}){
 
   const categoryData = [
 
-    {categoryId: 1, categoryName: 'Paper flower', categoryValue: 'paperFlower'},
-    {categoryId: 2, categoryName: 'Balloon', categoryValue: 'balloon'},
-    {categoryId: 3, categoryName: 'Glassware', categoryValue: 'glass_ware'},
+    {categoryId: 1, categoryName: 'Paper flower', categoryValue: 'PAPER_FLOWER'},
+    {categoryId: 2, categoryName: 'Balloon', categoryValue: 'BALLONS'},
+    {categoryId: 3, categoryName: 'Glassware', categoryValue: 'GLASSWARE'},
 
   ];
 
@@ -25,14 +26,10 @@ function UpdateCustomerModal({show, eventClose, targetData, rerenderEvent}){
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    const productId = targetData.productId;
     
-    console.log(productFormData);
-
     try {
-      const response = await axios.put('http://localhost:5000/client/product/'.concat(targetData.productId), productFormData);
-      
-      console.log(response.data); // Handle the response data
-      
+      const response = await ProductRepository.updateProduct(productId, productFormData)   
       setProductFormData(targetData);
       rerenderEvent();
       eventClose();
@@ -62,7 +59,7 @@ function UpdateCustomerModal({show, eventClose, targetData, rerenderEvent}){
               </Col>
               <Col col={6}>
                 <Form.Label>Category</Form.Label>
-                <Form.Select name = 'category' value = {targetData.category} aria-label="Default select example" onChange={handleChange}>
+                <Form.Select name = 'category' defaultValue = {targetData.category} aria-label="Default select example" onChange={handleChange}>
                   {
                     categoryData.map((categoryItem) => renderOptions(categoryItem))
                   }

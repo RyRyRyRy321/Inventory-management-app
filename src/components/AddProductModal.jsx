@@ -1,6 +1,6 @@
 import { useState} from 'react';
 import {Modal, Button, Form, Container, Row, Col, Stack, InputGroup} from 'react-bootstrap'
-import axios from 'axios';
+import ProductRepository from '../scripts/ProductRepository';
 
 function AddCustomerModal({show, eventClose, rerenderEvent}){
 
@@ -20,7 +20,7 @@ function AddCustomerModal({show, eventClose, rerenderEvent}){
   const categoryData = [
 
     {categoryId: 1, categoryName: 'Paper flower', categoryValue: 'PAPER_FLOWER'},
-    {categoryId: 2, categoryName: 'Balloon', categoryValue: 'BALLON'},
+    {categoryId: 2, categoryName: 'Balloon', categoryValue: 'BALLONS'},
     {categoryId: 3, categoryName: 'Glassware', categoryValue: 'GLASSWARE'},
   ];
 
@@ -30,17 +30,17 @@ function AddCustomerModal({show, eventClose, rerenderEvent}){
   
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     try {
-      const response = await axios.post('http://localhost:5000/client/product', productFormData);
-      console.log(response.data); // Handle the response data
+      await ProductRepository.readProduct(productFormData);
       setProductFormData(emptyProductForm);
       rerenderEvent();
       eventClose();
     } catch (error) {
-      console.error(error);
+      console.log(error);
     }
-
+      
+      
+      
   };
 
 

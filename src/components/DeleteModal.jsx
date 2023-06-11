@@ -1,6 +1,5 @@
 import {Modal, Button, Form, Container, Row, Col, Stack, InputGroup} from 'react-bootstrap'
-import axios from 'axios';
-
+import ProductRepository from '../scripts/ProductRepository';
 
 
 function DeleteModal({show, eventClose, targetData, rerenderEvent}){
@@ -8,10 +7,10 @@ function DeleteModal({show, eventClose, targetData, rerenderEvent}){
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    const productId = targetData.productId
     
     try {
-      const response = await axios.delete('http://localhost:5000/client/product/'.concat(targetData.productId));
-      console.log("Product deleted"); // Handle the response data
+      await ProductRepository.deleteProduct(productId);
       rerenderEvent();
       eventClose();
     } catch (error) {

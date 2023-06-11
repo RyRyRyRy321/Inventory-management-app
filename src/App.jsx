@@ -12,8 +12,6 @@ import ProductRepository from './scripts/ProductRepository';
 import UpdateCustomerModal from './components/UpdateProductModal';
 import AddCustomerModal from './components/AddProductModal';
 import DeleteModal from './components/DeleteModal';
-import UpdateButton from './components_2/UpdateButton';
-
 
 
 function App() {
@@ -88,7 +86,7 @@ function App() {
 
     async function fetchData(){
       try {
-        const productData = await ProductRepository.getProduct();
+        const productData = await ProductRepository.readProduct();
         setProductData(productData);
       } catch (error) {
         console.log(error);
