@@ -1,9 +1,33 @@
-import { useState} from 'react';
+import {useState} from 'react';
 import {Modal, Button, Form, Container, Row, Col, Stack, InputGroup} from 'react-bootstrap'
 import ProductRepository from '../scripts/ProductRepository';
+import {useFormik, useFormikContext} from 'formik';
+import * as Yup from 'yup';
 
-function AddCustomerModal({show, eventClose, rerenderEvent}){
 
+const categoryData = [
+  {categoryId: 1, categoryName: 'Paper flower', categoryValue: 'PAPER_FLOWER'},
+  {categoryId: 2, categoryName: 'Balloon', categoryValue: 'BALLONS'},
+  {categoryId: 3, categoryName: 'Glassware', categoryValue: 'GLASSWARE'},
+];
+
+function AddProductModal({show, eventClose, rerenderEvent}){
+
+  const original_productSchema = Yup.object().shape({
+    productName: Yup.string().min(8, "Product name is too short").max(20, "Product name is too long").required("Product name is required"),
+    category: Yup.string().required("Select a category"),
+    productDesc: Yup.string().max(300, "Maximum characters of 300").required("Product description is required"),
+    quantity: Yup.number().test('maxDigits','Quantity can have a maximum of 9 digits',value => value.toString().length <= 9
+    ).required('Quantity is required').moreThan(-1,"Quantity cannot have negative value"),
+    stockAlertQuantity: Yup.number().test('maxDigits','Stock alert quantity can have a maximum of 9 digits',value => value.toString().length <= 9
+    ).required('Stock alert quantity is required').moreThan(-1,"Stock alert quantity cannot have negative value"),
+    productPrice: Yup.number().test('maxDigits','Product price can have a maximum of 9 digits',value => value.toString().length <= 9
+    ).required('Product price is required').moreThan(-1,"Product price cannot have negative value"),
+    unitPrice: Yup.number().test('maxDigits','Unit price can have a maximum of 9 digits',value => value.toString().length <= 9
+    ).required('Unit price is required').moreThan(-1,"Unit price cannot have negative value"),
+    discount: Yup.number().min(0,"Yes").max(1,"No")
+  })
+  
   const emptyProductForm = {
     productName:'',
     category:'NONE',
@@ -15,88 +39,199 @@ function AddCustomerModal({show, eventClose, rerenderEvent}){
     discount:'',
   }
 
-  const [productFormData, setProductFormData] = useState(emptyProductForm);
-  
-  const categoryData = [
+  const handleFormClose = (values) => {
+    formik.resetForm();
+    formik.setErrors({});
+    eventClose();
+  }
 
-    {categoryId: 1, categoryName: 'Paper flower', categoryValue: 'PAPER_FLOWER'},
-    {categoryId: 2, categoryName: 'Balloon', categoryValue: 'BALLONS'},
-    {categoryId: 3, categoryName: 'Glassware', categoryValue: 'GLASSWARE'},
-  ];
+  const handleFormSubmit = async (values) => {
 
-  const handleChange = (e) => {
-    setProductFormData({ ...productFormData, [e.target.name]: e.target.value });
-  };
-  
-  const handleSubmit = async (e) => {
-    e.preventDefault();
     try {
-      await ProductRepository.readProduct(productFormData);
-      setProductFormData(emptyProductForm);
-      rerenderEvent();
+      const response = await ProductRepository.createProduct(values);
+      formik.resetForm();
+      formik.setErrors({});
       eventClose();
+      rerenderEvent();
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
-      
-      
-      
+
+    
   };
+  
+  const formik = useFormik({
+    initialValues: emptyProductForm, 
+    validationSchema: original_productSchema, 
+    onSubmit: handleFormSubmit
+  })
+  
+  
+
+  return(
+        // Showing is not working, and I don't know why
+        <Modal show={show} onHide={handleFormClose} size='lg'>
+
+          <Modal.Header closeButton>
+            <Modal.Title>Add Product</Modal.Title>
+          </Modal.Header>
+
+            <Form noValidate onSubmit={formik.handleSubmit}>
+
+              <Modal.Body>
+                <Bootstrapform values={formik.values} errors={formik.errors} handleChange={formik.handleChange} touched={formik.touched} ></Bootstrapform>
+              </Modal.Body>
+        
+              <Modal.Footer>
+
+                <Button variant="secondary" onClick={handleFormClose}>
+                  Close
+                </Button>
+
+                <Button variant="primary" type = "submit">
+                  Submit
+                </Button>
+
+              </Modal.Footer>
+            </Form>
+            
+      </Modal>
+    
+  );
 
 
+}
 
+function Bootstrapform({values, errors, touched, handleChange}){
 
-    return (
-      <Modal show={show} onHide={eventClose} size='lg'>
-  
-        <Modal.Header closeButton>
-          <Modal.Title>Add Product</Modal.Title>
-        </Modal.Header>
-  
-        <Modal.Body>
-        <Form>
-          <Container>
-            <Row className='mb-2'>
-              <Col col={6}>
-                <Form.Label>Product Name</Form.Label>
-                <Form.Control type = 'text' name = 'productName' value={productFormData.productName} onChange={handleChange}></Form.Control>
-              </Col>
-              <Col col={6}>
-                <Form.Label>Category</Form.Label>
-                <Form.Select aria-label="Default select example" name = 'category' value = {productFormData.category} onChange={handleChange}>
-                  <option>Open this select menu</option>
-                  {
-                    categoryData.map((categoryItem) => renderOptions(categoryItem))
-                  }
-                </Form.Select>
-              </Col>
-            </Row>
-            <Row className='mb-2'>
-              <Col>
-                <Form.Label>Product description</Form.Label>
-                <Form.Control as ="textarea" rows={5} name = 'productDesc' placeholder='Maximum of 300 characters' value = {productFormData.productDesc} onChange={handleChange}></Form.Control>
-              </Col>
-            </Row>
-            <Row className='mb-2'>
-              <Col col={6}>
-                <Form.Label>Quantity</Form.Label>
-                <Form.Control type = 'number' name = 'quantity' value={productFormData.quantity} onChange={handleChange}></Form.Control>
-              </Col>
-  
-              <Col col={6}>
-                <Form.Label>Stock alert</Form.Label>
-                <Form.Control type='number' name = 'stockAlertQuantity' value = {productFormData.stockAlertQuantity} onChange={handleChange}></Form.Control>
-              </Col>
-  
-            </Row>
-            <Row className='mb-2'>
+  return (
+    <Container>
+      <Row className='mb-2'>
+        <Col col={6}>
+          <Form.Label>Product Name</Form.Label>
+
+          <Form.Control type = 'text' 
+          name = 'productName' 
+          id = 'productName' 
+          value={values.productName} 
+          onChange={handleChange} 
+          isInvalid={touched.productName && errors.productName}
+          autoComplete='off'
+          >
+
+          </Form.Control>
+
+        <Form.Control.Feedback type="invalid">
+          {errors.productName}
+        </Form.Control.Feedback>
+
+        </Col>
+        
+        <Col col={6}>
+          <Form.Label>Category</Form.Label>
+          <Form.Select 
+          name = 'category' 
+          onChange={handleChange}
+          value={values.category}
+          isInvalid={touched.category && errors.category}
+          autoComplete='off'
+          >
+            <option key={0} value = {"NONE"}>{"None"}</option>
+            {
+              categoryData.map((categoryItem) => renderOptions(categoryItem))
+            }
+          </Form.Select>
+
+          <Form.Control.Feedback type="invalid">
+            {errors.category}
+          </Form.Control.Feedback>
+        </Col>
+      </Row>
+      
+      <Row className='mb-2'>
+        <Col>
+          <Form.Label>Product description</Form.Label>
+          <Form.Control 
+          as ="textarea" 
+          name = 'productDesc' 
+          rows={5} 
+          placeholder='Maximum of 300 characters'
+          value={values.productDesc}
+          onChange={handleChange}
+          isInvalid={touched.productDesc && errors.productDesc}
+          autoComplete='off'
+          >
+          </Form.Control>
+
+          <Form.Control.Feedback type="invalid">
+            {errors.productDesc}
+          </Form.Control.Feedback>
+
+        </Col>
+      </Row>
+
+      <Row className='mb-2'>
+        <Col col={6}>
+          <Form.Label>Quantity</Form.Label>
+          <Form.Control 
+          type = 'number' 
+          name = 'quantity' 
+          onChange={handleChange}
+          value={values.quantity}
+          isInvalid={touched.quantity && errors.quantity}
+          autoComplete='off'
+          >
+
+          </Form.Control>
+
+          <Form.Control.Feedback type="invalid">
+              {errors.quantity}
+          </Form.Control.Feedback>
+        </Col>
+
+        
+
+        <Col col={6}>
+          <Form.Label>Stock alert</Form.Label>
+          <Form.Control 
+          type='number' 
+          name = 'stockAlertQuantity' 
+          onChange={handleChange}
+          value={values.stockAlertQuantity}
+          isInvalid={touched.stockAlertQuantity && errors.stockAlertQuantity}
+          autoComplete='off'>
+
+          </Form.Control>
+
+          <Form.Control.Feedback type="invalid">
+              {errors.stockAlertQuantity}
+          </Form.Control.Feedback>
+        </Col>
+      </Row>
+
+      <Row className='mb-2'>
               <Col col={6}>
                 <Form.Label>Product price</Form.Label>
   
                 <InputGroup>
                   <InputGroup.Text>₱</InputGroup.Text>
-                  <Form.Control type = 'number' name = 'productPrice' value = {productFormData.productPrice} onChange={handleChange}></Form.Control>
+                  <Form.Control 
+                  type = 'number' 
+                  name = 'productPrice' 
+                  onChange={handleChange}
+                  value={values.productPrice}
+                  isInvalid={touched.productPrice && errors.productPrice}
+                  autoComplete='off'
+                  >
+
+                  </Form.Control>
+
+                  <Form.Control.Feedback type="invalid">
+                    {errors.productPrice}
+                  </Form.Control.Feedback>
                 </InputGroup>
+
+                
         
               </Col>
               <Col col={6}>
@@ -104,42 +239,48 @@ function AddCustomerModal({show, eventClose, rerenderEvent}){
   
                 <InputGroup>
                   <InputGroup.Text>₱</InputGroup.Text>
-                  <Form.Control type = 'number' name = 'unitPrice' value = {productFormData.unitPrice} onChange={handleChange}></Form.Control>
+                  <Form.Control 
+                    type = 'number' 
+                    name = 'unitPrice' 
+                    onChange={handleChange}
+                    value={values.unitPrice}
+                    isInvalid={touched.unitPrice && errors.unitPrice}
+                    autoComplete='off'>
+
+                    </Form.Control>
+
+                  <Form.Control.Feedback type="invalid">
+                    {errors.unitPrice}
+                  </Form.Control.Feedback>
                 </InputGroup>
+
                 
               </Col>
             </Row>
+
             <Row className='mb-2'>
               <Col col={1}>
                 <Form.Label>Discount</Form.Label>
-                <Form.Control type='number' name = 'discount' value = {productFormData.discount} onChange={handleChange}></Form.Control>
+                <Form.Control 
+                type='number' 
+                name = 'discount' 
+                onChange={handleChange}
+                value={values.discount}
+                isInvalid={touched.discount && errors.discount}
+                autoComplete='off'>
+                  
+                </Form.Control>
+
+              <Form.Control.Feedback type="invalid">
+                  {errors.discount}
+                </Form.Control.Feedback>
               </Col>
-              
-              {/* <Col>
-                <Form.Label>Product Image</Form.Label>
-                <Form.Control type='file'></Form.Control>
-              </Col> */}
+            
             </Row>
-          </Container>
-        </Form>
-  
-        </Modal.Body>
-  
-        <Modal.Footer>
 
-          <Button variant="secondary" onClick={eventClose}>
-            Close
-          </Button>
-
-          <Button variant="primary" type = "submit" onClick={handleSubmit}>
-            Submit
-          </Button>
-
-        </Modal.Footer>
-      </Modal>
-    );
-  
-    
+    </Container>
+      
+  );
 }
 
 function renderOptions(categoryItem){
@@ -149,4 +290,4 @@ function renderOptions(categoryItem){
 }
 
 
-export default AddCustomerModal;
+export default AddProductModal;

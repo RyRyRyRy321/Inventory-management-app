@@ -66,6 +66,7 @@ function UpdateCustomerModal({show, eventClose, targetData, rerenderEvent}){
                 </Form.Select>
               </Col>
             </Row>
+            
             <Row className='mb-2'>
               <Col>
                 <Form.Label>Product description</Form.Label>

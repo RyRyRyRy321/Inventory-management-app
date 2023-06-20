@@ -3,6 +3,7 @@ import ProductTable from './components/ProductTable';
 import AdminNavBar from './components/AdminNavBar';
 import SideNavBar from './components/SideNavBar';
 import { Col, Container, Row } from 'react-bootstrap';
+import ExampleForm from './components/ExampleForm';
 
 function App() {
 

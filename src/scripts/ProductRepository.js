@@ -11,7 +11,7 @@ class ProductRepository {
             const response = await this.axiosInstance.get("product");
             return response.data;
         } catch (error) {
-          console.log(error);
+          console.error(error);
           return [];
         }
 
@@ -19,7 +19,7 @@ class ProductRepository {
 
     static async createProduct(productFormData){
         try {
-            await axios.post('http://localhost:5000/client/product', productFormData);
+            const response =  await axios.post('http://localhost:5000/client/product', productFormData);
             } catch (error) {
             console.error(error);
             }
@@ -28,9 +28,9 @@ class ProductRepository {
 
     static async updateProduct(productId, productFormData){
         try {
-            await axios.put('http://localhost:5000/client/product/'.concat(productId), productFormData);
+            const response = await axios.put('http://localhost:5000/client/product/'.concat(productId), productFormData);
         } catch (error) {
-            console.error(error);
+            console.error(error.response.data);
         }
   
     }

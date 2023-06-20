@@ -5,8 +5,9 @@ import { Button, Col, Container, Row, Stack } from 'react-bootstrap';
 import { useTable } from 'react-table';
 import ProductRepository from '../scripts/ProductRepository';
 import UpdateCustomerModal from './UpdateProductModal';
-import AddCustomerModal from './AddProductModal';
+import AddProductModal from './AddProductModal';
 import DeleteModal from './DeleteModal';
+import AddProductForm from './AddProductModal';
 
 
 function ProductTable(){
@@ -152,7 +153,7 @@ function ProductTable(){
           </Col>
         </Row>
 
-        <AddCustomerModal show={modalOpen} eventClose={closeModal} rerenderEvent={fetchData}></AddCustomerModal>
+        <AddProductForm show={modalOpen} eventClose={closeModal} rerenderEvent={fetchData}></AddProductForm>
         <UpdateCustomerModal show={modalOpenUpdate} eventClose={closeModalUpdate} targetData={updateData} rerenderEvent={fetchData}></UpdateCustomerModal>
         <DeleteModal show={modalOpenDelete} eventClose={closeModalDelete} targetData={deleteData} rerenderEvent={fetchData}></DeleteModal>
         </>
