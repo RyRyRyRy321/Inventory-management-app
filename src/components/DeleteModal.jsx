@@ -29,7 +29,7 @@ function DeleteModal({show, eventClose, targetData, rerenderEvent}){
           </Modal.Header>
     
           <Modal.Body>
-            <p>You good?</p>
+            <p>Are you sure you want to delete this item?</p>
           </Modal.Body>
     
           <Modal.Footer>
@@ -38,7 +38,7 @@ function DeleteModal({show, eventClose, targetData, rerenderEvent}){
               Close
             </Button>
   
-            <Button variant="primary" type = "submit" onClick={handleSubmit}>
+            <Button variant="danger" type = "submit" onClick={handleSubmit}>
               Delete
             </Button>
   
