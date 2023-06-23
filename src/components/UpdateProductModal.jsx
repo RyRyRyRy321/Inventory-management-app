@@ -61,8 +61,7 @@ function UpdateCustomerModal({show, eventClose, targetData, rerenderEvent}){
 
     try {
 
-      console.log(values);
-      // const response = await ProductRepository.updateProduct(productId, values);
+      const response = await ProductRepository.updateProduct(productId, values);
       formik.resetForm();
       formik.setErrors({});
       eventClose();
