@@ -4,32 +4,26 @@ import AdminNavBar from './components/AdminNavBar';
 import SideNavBar from './components/SideNavBar';
 import { Col, Container, Row } from 'react-bootstrap';
 import ExampleForm from './components/ExampleForm';
+import './styles/App.css';
 
 function App() {
 
     return (
 
       <div className="App">
+        <Container className='tableContainer'>
+          <h1>REST table</h1>
 
-        <header>
-          <AdminNavBar></AdminNavBar>
-        </header>
+          <hr></hr>
+          
+          <p>
+            This is a dynamic data table component that connects the backend and frontend of a web application using RESTful APIs. It retrieves data from the server and presents it in a structured tabular format, allowing users to easily view and interact with the information.
+          </p>
 
-
-        <Container fluid>
-          <Row>
-            <Col className='m-1' xs = {2}>
-              <SideNavBar></SideNavBar>
-            </Col>
-
-            <Col className='m-1'>
-              <ProductTable></ProductTable>
-            </Col>
-            
-          </Row>
+          <ProductTable></ProductTable>
         </Container>
-
       </div>
+
     )
   
   }
