@@ -27,16 +27,13 @@ function App() {
 
           <Col md = {2}>
             <Navbar bg="light" variant="light" className="d-flex flex-column">
-              <Navbar.Brand className='d-flex flex-column align-items-center' href="#home">My Website</Navbar.Brand>
+              <Navbar.Brand className='d-flex flex-column align-items-center'>Inventory Management</Navbar.Brand>
               <Navbar.Toggle aria-controls="basic-navbar-nav" />
 
               <Navbar.Collapse id="basic-navbar-nav">
                 <Nav className="flex-column align-items-start ">
-                  <Nav.Link href="#home">Home</Nav.Link>
-                  <Nav.Link href="#about">About</Nav.Link>
-                  <Nav.Link href="#services">Services</Nav.Link>
-                  <Nav.Link href="#contact">Contact</Nav.Link>
-                  <Nav.Link href="#contact">Hello</Nav.Link>
+                  <Nav.Link>Dashboard</Nav.Link>
+                  <Nav.Link>Products</Nav.Link>
                 </Nav>
               </Navbar.Collapse>
             </Navbar>
