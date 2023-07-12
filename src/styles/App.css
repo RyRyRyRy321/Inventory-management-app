@@ -1,4 +1,11 @@
-.tableContainer {
-  margin-top: 2%;
-  width: 60%;
+.navbar-column {
+  height: 100%;
+  width: 100%; 
+}
+
+hr .custom-hr {
+  border: 0;
+  border-top: 1px solid red;
+  background-color: red;
+  margin: 1rem 0;
 }

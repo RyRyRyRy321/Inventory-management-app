@@ -1,28 +1,67 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import ProductTable from './components/ProductTable';
-import { Col, Container, Row } from 'react-bootstrap';
+import { Button, Col, Container, Row, Stack, Nav, Navbar } from 'react-bootstrap';
 import './styles/App.css';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
 function App() {
 
-    return (
+  const router = createBrowserRouter([
+    {
+      path: "/",
+      element: <h1>Hello world</h1>,
+      children: [
+        {
 
-      <div className="App">
-        <Container className='tableContainer'>
-          <h1>REST table</h1>
+        }
+      ]
+    }
+  ])
 
-          <hr></hr>
-          
-          <p>
-            This is a dynamic data table component that connects the backend and frontend of a web application using RESTful APIs. It retrieves data from the server and presents it in a structured tabular format, allowing users to easily view and interact with the information.
-          </p>
+  return (
 
-          <ProductTable></ProductTable>
-        </Container>
-      </div>
+    <div className="App"> 
+      <Container className='tableContainer' fluid>
 
-    )
-  
-  }
+        <Row>
+
+          <Col md = {2}>
+            <Navbar bg="light" variant="light" className="d-flex flex-column">
+              <Navbar.Brand className='d-flex flex-column align-items-center' href="#home">My Website</Navbar.Brand>
+              <Navbar.Toggle aria-controls="basic-navbar-nav" />
+
+              <Navbar.Collapse id="basic-navbar-nav">
+                <Nav className="flex-column align-items-start ">
+                  <Nav.Link href="#home">Home</Nav.Link>
+                  <Nav.Link href="#about">About</Nav.Link>
+                  <Nav.Link href="#services">Services</Nav.Link>
+                  <Nav.Link href="#contact">Contact</Nav.Link>
+                  <Nav.Link href="#contact">Hello</Nav.Link>
+                </Nav>
+              </Navbar.Collapse>
+            </Navbar>
+          </Col>
+
+          <Col>
+            <main>
+              <h1>Product table</h1>
+
+              <hr></hr>
+
+              <p>
+                This is a dynamic data table component that connects the backend and frontend of a web application using RESTful APIs. It retrieves data from the server and presents it in a structured tabular format, allowing users to easily view and interact with the information.
+              </p>
+
+              <ProductTable></ProductTable>
+            </main>
+          </Col>
+        </Row>
+
+      </Container>
+    </div>
+
+  )
+
+}
 
 export default App;
