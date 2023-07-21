@@ -4,13 +4,37 @@ import React from 'react';
 import { Button, Col, Container, Row, Stack } from 'react-bootstrap';
 import { useTable } from 'react-table';
 import ProductRepository from '../scripts/ProductRepository';
-import UpdateCustomerModal from './UpdateProductModal';
-import AddProductModal from './AddProductModal';
 import DeleteModal from './DeleteModal';
-import AddProductForm from './AddProductModal';
+import { Link, useLoaderData } from 'react-router-dom';
+
+export async function rerender(){
+
+  const products = await ProductRepository.readProduct();
+  return products;
+
+}
+
+export async function loader(){
+
+    const products = await ProductRepository.readProduct();
+    return products;
+    
+}
 
 
 function ProductTable(){
+
+  const [isDeleteModalOpen, setModalOpen] = useState(false);
+  const [deleteData, setDeleteData] = useState(null);
+
+  const openDeleteModal = (data) => {
+    setModalOpen(true);
+    setDeleteData(data);
+  };
+
+  const closeDeleteModal = () => {
+    setModalOpen(false);
+  };
 
     
     const columns = React.useMemo(() => [
@@ -39,82 +63,39 @@ function ProductTable(){
           Header: 'Actions',
           Cell: ({row}) => (
             <Stack direction='horizontal' gap = {1}>
-              <Button onClick={() => openModalUpdate(row)}>Update</Button>
-              <Button onClick={() => openModalDelete(row)}>Delete</Button>
+              <Link to= {'/updateForm/'.concat(row.original.productId)} className='btn btn-primary' role = 'button'>Update</Link>
+              <Button onClick = {() => openDeleteModal(row.original)}>Delete</Button>
             </Stack>
           ),
   
         }
         ],[]
       );
-    
-    const [isDataAvailable, setDataAvailable] = useState(false);
-    const [deleteData, setDeleteData] = useState([]);
-    const [updateData, setUpdateData] = useState([]);
-    const [data, setProductData] = useState([]);
-    const [modalOpen, setModalOpen] = useState(false);
-    const [modalOpenUpdate, setModalOpenUpdate] = useState(false);
-    const [modalOpenDelete, setModalOpenDelete] = useState(false);
-    
-    
-    const openModal = () => {
-      setModalOpen(true);
-    };
   
-    const closeModal = () => {
-      setModalOpen(false);
-    };
+    const productData = useLoaderData();
 
-    const openModalUpdate = (row) => {
-      setModalOpenUpdate(true);
-      setUpdateData(row.original);
-    };
-  
-    const closeModalUpdate = () => {
-      setModalOpenUpdate(false);
-    };
-
-    const openModalDelete = (row) => {
-      setModalOpenDelete(true);
-      setDeleteData(row.original);
-    };
-  
-    const closeModalDelete = () => {
-      setModalOpenDelete(false);
-    };
-  
-    async function fetchData(){
-      try {
-        const productData = await ProductRepository.readProduct();
-
-        if (productData.length > 0){
-          setDataAvailable(false);
-        }
-
-        setDataAvailable(true);
-        setProductData(productData);
-
-      } catch (error) {
-        console.error(error);
-        setDataAvailable(false);
-        setProductData(productData);
-        
-      }
-    }
     
-      useEffect(() => {fetchData()},[]);
     
-      
-      const {
-        headerGroups,
-        rows,
-        prepareRow,
-      } = useTable({ columns, data })
+    const {
+      headerGroups,
+      rows,
+      prepareRow,
+    } = useTable({ columns, data: productData });
 
+
+ 
     function TableComponent(){
 
       return (
         <>
+          <h1>REST table</h1>
+
+          <hr></hr>
+
+          <p>
+            This is a dynamic data table component that connects the backend and frontend of a web application using RESTful APIs. It retrieves data from the server and presents it in a structured tabular format, allowing users to easily view and interact with the information.
+          </p>
+
           {
             <>
               <table className = "table table-bordered">
@@ -163,7 +144,7 @@ function ProductTable(){
 
               <Row>
                 <Col>
-                  <Button onClick = {openModal}>Add Product</Button>
+                  <Link to= '/form' className='btn btn-primary' role = 'button' >Add Product</Link>
                 </Col>
               </Row>
             </>
@@ -176,11 +157,7 @@ function ProductTable(){
     <>
       <TableComponent></TableComponent>
 
-      
-
-      <AddProductForm show={modalOpen} eventClose={closeModal} rerenderEvent={fetchData}></AddProductForm>
-      <UpdateCustomerModal show={modalOpenUpdate} eventClose={closeModalUpdate} targetData={updateData} rerenderEvent={fetchData}></UpdateCustomerModal>
-      <DeleteModal show={modalOpenDelete} eventClose={closeModalDelete} targetData={deleteData} rerenderEvent={fetchData}></DeleteModal>
+      <DeleteModal show={isDeleteModalOpen} eventClose={closeDeleteModal} targetData={deleteData}></DeleteModal>
     </>
     );
 }

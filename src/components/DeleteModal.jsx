@@ -1,8 +1,11 @@
-import {Modal, Button, Form, Container, Row, Col, Stack, InputGroup} from 'react-bootstrap'
+import {Modal, Button, Container, Row, Col, Stack, InputGroup} from 'react-bootstrap'
 import ProductRepository from '../scripts/ProductRepository';
+import { Form, useNavigate } from 'react-router-dom';
 
 
-function DeleteModal({show, eventClose, targetData, rerenderEvent}){
+function DeleteModal({show, eventClose, targetData}){
+
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -11,12 +14,12 @@ function DeleteModal({show, eventClose, targetData, rerenderEvent}){
     
     try {
       await ProductRepository.deleteProduct(productId);
-      rerenderEvent();
       eventClose();
+      navigate("/");
     } catch (error) {
       console.error(error);
     }
-
+    
 
 
   };
@@ -37,10 +40,13 @@ function DeleteModal({show, eventClose, targetData, rerenderEvent}){
             <Button variant="secondary" onClick={eventClose}>
               Close
             </Button>
-  
-            <Button variant="danger" type = "submit" onClick={handleSubmit}>
-              Delete
-            </Button>
+
+            <Form onSubmit={handleSubmit}>
+              <Button variant="danger" type = "submit" >
+                Delete
+              </Button>
+            </Form>
+
   
           </Modal.Footer>
         </Modal>

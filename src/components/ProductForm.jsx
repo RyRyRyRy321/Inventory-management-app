@@ -1,4 +1,4 @@
-import {Form, Container, Row, Col, InputGroup} from 'react-bootstrap'
+import {Form, Container, Row, Col, InputGroup, Button} from 'react-bootstrap'
 
 
 function ProductForm({values, errors, touched, handleChange, categoryData}){
@@ -176,6 +176,11 @@ function ProductForm({values, errors, touched, handleChange, categoryData}){
                 </Col>
               
               </Row>
+
+
+            <Button variant="primary" type = "submit">
+              Submit
+            </Button>
   
       </Container>
         

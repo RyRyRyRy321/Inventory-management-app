@@ -5,14 +5,22 @@ class ProductRepository {
     static axiosInstance = axios.create({
         baseURL: "http://localhost:5000/client/"
     })
+
+    static async readSpecificProduct(productId){
+        try {
+            const response = await this.axiosInstance.get("http://localhost:5000/client/product/".concat(productId));
+            return response.data;
+        } catch (error) {
+          throw error;
+        }
+    }
     
     static async readProduct(){
         try {
             const response = await this.axiosInstance.get("product");
             return response.data;
         } catch (error) {
-          console.error(error);
-          return [];
+          throw error;
         }
 
     }
