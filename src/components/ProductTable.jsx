@@ -88,7 +88,7 @@ function ProductTable(){
 
       return (
         <>
-          <h1>REST table</h1>
+          <h1>Product table</h1>
 
           <hr></hr>
 

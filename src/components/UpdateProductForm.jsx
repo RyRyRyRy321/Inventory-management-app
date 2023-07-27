@@ -65,8 +65,13 @@ export function UpdateProductForm(){
 
 
     return (
+      <>
+        <h1>Update Product</h1>
+        <hr></hr>
+
         <RouterForm noValidate method="post" onSubmit={formik.handleSubmit} action='/form'>
             <ProductForm values={formik.values} errors={formik.errors} handleChange={formik.handleChange} touched={formik.touched} categoryData={categoryData}></ProductForm>
         </RouterForm>
+      </>
     );
 }
