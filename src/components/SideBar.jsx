@@ -7,7 +7,6 @@ export function SideBar(){
 
     return(            
     <Navbar bg="light" variant="light" className="d-flex flex-column">
-    <Navbar.Brand className='d-flex flex-column align-items-center'>Inventory Management</Navbar.Brand>
     <Navbar.Toggle aria-controls="basic-navbar-nav" />
 
     <Navbar.Collapse id="basic-navbar-nav">
