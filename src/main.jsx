@@ -10,6 +10,7 @@ import { AddProductForm } from './components/AddProductForm';
 import { UpdateProductForm } from './components/UpdateProductForm';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { Auth0Provider } from '@auth0/auth0-react';
+import { AuthNotification } from './routes/authentication-notification';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
@@ -36,6 +37,9 @@ const router = createBrowserRouter([
       path: "updateForm/:productId",
       element: <UpdateProductForm></UpdateProductForm>,
       loader: updateProductLoader
+    }, {
+      path: "authNotif",
+      element: <AuthNotification></AuthNotification>
     }
   ]
   }
