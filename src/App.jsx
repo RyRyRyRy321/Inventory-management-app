@@ -18,7 +18,7 @@ function App() {
       <AdminNavBar></AdminNavBar>
       
         <Row>
-          <Col md = {2}>
+          <Col className='side-bar' md = {2}>
             <SideBar></SideBar>
           </Col>
 

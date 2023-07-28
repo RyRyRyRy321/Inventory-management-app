@@ -1,8 +1,10 @@
-import { Button, Col, Form, Row } from 'react-bootstrap';
+import { Button, Col, Form, Row, Stack } from 'react-bootstrap';
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
+import { Link, Outlet } from 'react-router-dom';
+
 
 
 export function AdminNavBar(){
@@ -29,6 +31,18 @@ export function AdminNavBar(){
                     </Form>
            
                 </Navbar.Collapse>
+            </Col>
+
+            <Col md = {2}>
+                <Stack className='justify-content-end' direction='horizontal'>
+                    <Button className='btn btn-primary m-1' role='button'>
+                        Login
+                    </Button>
+
+                    <Button className='btn btn-primary m-1' role='button'>
+                        Register
+                    </Button>
+                </Stack>
             </Col>
 
 
