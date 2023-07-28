@@ -9,7 +9,9 @@ import { Link, Outlet } from 'react-router-dom';
 
 
 export function AdminNavBar(){
-    const { loginWithRedirect } = useAuth0();
+    const { loginWithRedirect, logout, isAuthenticated, isLoading } = useAuth0();
+
+    
 
     return (
     <Navbar expand="lg" className="bg-body-tertiary">
@@ -38,13 +40,28 @@ export function AdminNavBar(){
 
             <Col md = {2}>
                 <Stack className='justify-content-end' direction='horizontal'>
-                    <Button className='btn btn-primary m-1' role='button' onClick={() => loginWithRedirect()}>
-                        Login
-                    </Button>
 
-                    <Button className='btn btn-primary m-1' role='button'>
-                        Register
-                    </Button>
+                    {
+                        
+                        !isLoading ? (!isAuthenticated ? 
+                            (
+                                <Button className='btn btn-primary m-1' role='button' onClick={() => loginWithRedirect()}>
+                                        Login
+                                </Button>
+                            ) : (
+                                <Button className='btn btn-primary m-1' role='button' onClick={() => logout()}>
+                                        Logout
+                                </Button>
+                            )
+                        ) :
+
+                        (
+                            <p>Loading...</p>
+                        )
+                        
+                    }
+
+                    
                 </Stack>
             </Col>
 
