@@ -1,10 +1,10 @@
 ## About The Project
----
+
 
 This is an inventory management application, which allows the user to add, update and delete products by communicating with the backend.
 
 ### Built With
----
+
 
 The frontend application is built using the following frameworks:
 
@@ -15,7 +15,7 @@ The frontend application is built using the following frameworks:
 
 
 ### Features
----
+
 
 * Add Product - Users can create a new product by filling the Product form and clicking the "Submit" button.
 * Update Product - Users can modify the contents of product in the Product form.
@@ -25,7 +25,7 @@ The frontend application is built using the following frameworks:
 
 
 ## Installation
----
+
 1. Clone the repository:
 
 ```
