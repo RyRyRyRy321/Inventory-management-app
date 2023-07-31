@@ -29,18 +29,14 @@ The frontend application is built using the following frameworks:
 1. Clone the repository:
 
 ```
-
 git clone <repository-url>
-
 ```
 
 
 2. Navigate to the project directory:
 
 ```
-
 cd <project-directory>
-
 ```
 
 
@@ -48,7 +44,6 @@ cd <project-directory>
 
 ```
 npm install
-
 ```
 
 
@@ -56,7 +51,6 @@ npm install
 
 ```
 npm start dev
-
 ```
 
 
