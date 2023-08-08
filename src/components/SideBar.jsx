@@ -7,11 +7,10 @@ import '../styles/Sidebar.css';
 export function SideBar(){
 
     return(            
-    <Navbar bg="light" variant="light" className="d-flex flex-column">
+    <Navbar bg="light" variant="light" className="someNavBar d-flex flex-column">
       <Navbar.Toggle aria-controls="basic-navbar-nav" />
 
-      <Navbar.Collapse id="basic-navbar-nav">
-        <Nav className="flex-column align-items-start ">
+        <Nav className="flex-column align-items-start">
 
         
 
@@ -40,7 +39,6 @@ export function SideBar(){
         </Nav>
 
 
-      </Navbar.Collapse>
     </Navbar>
     );
 }
